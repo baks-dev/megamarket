@@ -1,0 +1,26 @@
+page:
+  index: 'Megamarket auth tokens'
+  new: 'Add Megamarket auth tokens'
+  edit: 'Edit Megamarket auth tokens'
+  delete: 'Delete Megamarket auth tokens'
+
+breadcrumb:
+  index: 'Authorization Tokens'
+  new: 'Add authorization tokens'
+  edit: 'Edit authorization tokens'
+  delete: 'Delete authorization tokens'
+
+success:
+  new: 'Megamarket auth token successfully added'
+  edit: 'Megamarket auth token updated successfully'
+  delete: 'Megamarket auth token deleted successfully'
+  restore: 'Megamarket auth token successfully restored'
+
+danger:
+  new: '%s: Error adding Megamarket auth token'
+  edit: '%s: Error refreshing Megamarket auth token'
+  delete: '%s: Error refreshing Megamarket auth token'
+  restore: '%s: Error refreshing Megamarket auth token'
+form:
+  delete:
+    h4: 'Are you sure you want to delete the tokens?'
