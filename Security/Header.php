@@ -25,39 +25,61 @@ declare(strict_types=1);
 
 namespace BaksDev\Megamarket\Security;
 
+use BaksDev\Menu\Admin\Command\Upgrade\MenuAdminInterface;
 use BaksDev\Menu\Admin\Type\SectionGroup\Group\Collection\MenuAdminSectionGroupCollectionInterface;
+use BaksDev\Menu\Admin\Type\SectionGroup\Group\MenuGroupSettings;
+use BaksDev\Orders\Order\Security\MenuGroupMarketplace;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 
-/**
- * Секция меню Megamarket
- */
-#[AutoconfigureTag('baks.menu.admin.group')]
-final class MenuGroupMegamarket implements MenuAdminSectionGroupCollectionInterface
+#[AutoconfigureTag('baks.menu.admin')]
+final class Header implements MenuAdminInterface
 {
 
-    public const GROUP = 'megamarket';
-
-    /**
-     * Сортировка (чем меньше число - тем первым в итерации будет значение)
-     */
-    public static function sort(): int
+    public function getRole(): string
     {
-        return 99;
+        return Role::ROLE;
     }
 
     /**
-     * Проверяет, относится ли секция к данному объекту
+     * Добавляем заголовок в меню администрирования.
      */
-    public static function equals(string $group): bool
+
+    public function getPath(): ?string
     {
-        return self::GROUP === mb_strtolower($group);
+        return null;
     }
 
     /**
-     * Возвращает значение (value)
+     * Метод возвращает секцию, в которую помещается ссылка на раздел
      */
-    public function getValue(): string
+    public function getGroupMenu(): MenuAdminSectionGroupCollectionInterface|bool
     {
-        return self::GROUP;
+        return new MenuGroupSettings();
     }
+
+    /**
+     * Метод возвращает позицию, в которую располагается ссылка в секции меню
+     */
+    public function getSortMenu(): int
+    {
+        return 100;
+    }
+
+    /**
+     * Метод возвращает флаг "Показать в выпадающем меню"
+     */
+    public function getDropdownMenu(): bool
+    {
+        return true;
+    }
+
+
+    /**
+     * Метод возвращает флаг "Модальное окно".
+     */
+    public function getModal(): bool
+    {
+        return false;
+    }
+
 }

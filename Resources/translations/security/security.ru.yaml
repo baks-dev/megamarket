@@ -1,6 +1,7 @@
 # Роль
 
 ROLE_MEGAMARKET_TOKEN:
+  header: 'Megamarket'
   name: 'Токены авторизации Megamarket'
   desc: 'Токены авторизации Megamarket'
 

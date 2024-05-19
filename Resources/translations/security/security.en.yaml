@@ -1,22 +1,24 @@
 # Role
 
-ROLE_YANDEX_MARKET_TOKEN:
-  name: 'Authorization Tokens'
-  desc: 'Megamarket auth tokens'
+ROLE_MEGAMARKET_TOKEN:
+  header: 'Megamarket'
+  name: 'Megamarket authorization tokens'
+  desc: 'Megamarket authorization tokens'
 
 # Rules
-ROLE_YANDEX_MARKET_TOKEN_INDEX:
+
+ROLE_MEGAMARKET_TOKEN_INDEX:
   name: 'View'
   desc: ''
 
-ROLE_YANDEX_MARKET_TOKEN_NEW:
+ROLE_MEGAMARKET_TOKEN_NEW:
   name: 'Add'
   desc: ''
 
-ROLE_YANDEX_MARKET_TOKEN_EDIT:
+ROLE_MEGAMARKET_TOKEN_EDIT:
   name: 'Edit'
   desc: ''
 
-ROLE_YANDEX_MARKET_TOKEN_DELETE:
+ROLE_MEGAMARKET_TOKEN_DELETE:
   name: 'Delete'
   desc: ''

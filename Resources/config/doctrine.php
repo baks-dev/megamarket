@@ -36,10 +36,10 @@ return static function(DoctrineConfig $doctrine, ContainerConfigurator $configur
     $MODULE = substr(__DIR__, 0, strpos(__DIR__, "Resources"));
 
     $emDefault
-        ->mapping('yandex-market')
+        ->mapping('megamarket')
         ->type('attribute')
         ->dir($MODULE.'Entity')
         ->isBundle(false)
-        ->prefix('BaksDev\Yandex\Market\Entity')
-        ->alias('yandex-market');
+        ->prefix('BaksDev\Megamarket\Entity')
+        ->alias('megamarket');
 };
