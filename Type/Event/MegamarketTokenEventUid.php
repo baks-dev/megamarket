@@ -25,15 +25,12 @@ declare(strict_types=1);
 
 namespace BaksDev\Megamarket\Type\Event;
 
-use App\Kernel;
 use BaksDev\Core\Type\UidType\Uid;
-use Symfony\Component\Uid\AbstractUid;
 
 
 final class MegamarketTokenEventUid extends Uid
 {
     public const TEST = '03cb751d-04e1-7f89-9fdd-8d26d9fec082';
 
-    public const TYPE = 'ya_market_token_event';
-
+    public const TYPE = 'megamarket_token_event';
 }
