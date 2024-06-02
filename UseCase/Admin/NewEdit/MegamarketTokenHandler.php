@@ -25,43 +25,86 @@ declare(strict_types=1);
 
 namespace BaksDev\Megamarket\UseCase\Admin\NewEdit;
 
+use BaksDev\Core\Entity\AbstractHandler;
 use BaksDev\Core\Messenger\MessageDispatchInterface;
 use BaksDev\Megamarket\Entity\Event\MegamarketTokenEvent;
 use BaksDev\Megamarket\Entity\MegamarketToken;
 use BaksDev\Megamarket\Messenger\MegamarketTokenMessage;
 use Doctrine\ORM\EntityManagerInterface;
+use DomainException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-final class MegamarketTokenHandler
+final class MegamarketTokenHandler extends AbstractHandler
 {
 
-    private EntityManagerInterface $entityManager;
+//    private EntityManagerInterface $entityManager;
+//
+//    private ValidatorInterface $validator;
+//
+//    private LoggerInterface $logger;
+//
+//    private MessageDispatchInterface $messageDispatch;
+//
+//
+//    public function __construct(
+//        EntityManagerInterface $entityManager,
+//        ValidatorInterface $validator,
+//        LoggerInterface $logger,
+//        MessageDispatchInterface $messageDispatch,
+//    )
+//    {
+//        $this->entityManager = $entityManager;
+//        $this->validator = $validator;
+//        $this->logger = $logger;
+//        $this->messageDispatch = $messageDispatch;
+//
+//    }
 
-    private ValidatorInterface $validator;
 
-    private LoggerInterface $logger;
-
-    private MessageDispatchInterface $messageDispatch;
-
-
-    public function __construct(
-        EntityManagerInterface $entityManager,
-        ValidatorInterface $validator,
-        LoggerInterface $logger,
-        MessageDispatchInterface $messageDispatch,
-    )
+    /** @see Megamarket */
+    public function handle(
+        MegamarketTokenDTO $command
+    ): string|MegamarketToken
     {
-        $this->entityManager = $entityManager;
-        $this->validator = $validator;
-        $this->logger = $logger;
-        $this->messageDispatch = $messageDispatch;
 
+        /** Валидация DTO  */
+        $this->validatorCollection->add($command);
+
+        $this->main = new MegamarketToken($command->getProfile());
+        $this->event = new MegamarketTokenEvent();
+
+        try
+        {
+            $command->getEvent() ? $this->preUpdate($command, true) : $this->prePersist($command);
+        }
+        catch(DomainException $errorUniqid)
+        {
+            return $errorUniqid->getMessage();
+        }
+
+        /** Валидация всех объектов */
+        if($this->validatorCollection->isInvalid())
+        {
+            return $this->validatorCollection->getErrorUniqid();
+        }
+
+        $this->entityManager->flush();
+
+        /* Отправляем сообщение в шину */
+        $this->messageDispatch->dispatch(
+            message: new MegamarketTokenMessage($this->main->getId(), $this->main->getEvent(), $command->getEvent()),
+            transport: 'megamarket'
+        );
+
+
+        return $this->main;
     }
 
 
+
     /** @see MegamarketToken */
-    public function handle(
+    public function _handle(
         MegamarketTokenDTO $command,
     ): string|MegamarketToken
     {
@@ -109,9 +152,6 @@ final class MegamarketTokenHandler
             $Event->setEntity($command);
             $this->entityManager->persist($Event);
         }
-
-        //        $this->entityManager->clear();
-        //        $this->entityManager->persist($Event);
 
 
         /** @var MegamarketToken $Main */

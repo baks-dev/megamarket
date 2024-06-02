@@ -12,16 +12,13 @@
 
         {{ form_row(form.token, { label: 'Токен авторизации' }) }}
 
-        {% if form.business.vars.data %}
+        {% if form.company.vars.data %}
             <div class="alert alert-warning" role="alert">
-                В целях безопастности токен зашифрован и не отображается в форме. Оставьте поле пустым, если не желаете
-                обновлять токен.
+                В целях безопастности токен зашифрован и не отображается в форме. Оставьте поле пустым, если обновлениее указанного ранее токена не требуется!
             </div>
         {% endif %}
 
-        {{ form_row(form.company, { label: 'Идентификатор компании' }) }}
-
-        {{ form_row(form.business, { label: 'Идентификатор кабинета' }) }}
+        {{ form_row(form.company, { label: 'Идентификатор кабинета' }) }}
 
         <div class="flex-fill d-flex justify-content-around pb-3 radio-buttons gap-3" data-buttons="true">
 

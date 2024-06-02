@@ -27,7 +27,7 @@ namespace BaksDev\Megamarket\Api;
 
 use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 
-use BaksDev\Megamarket\Repository\YaMarketTokenByProfile\YaMarketTokenByProfileInterface;
+use BaksDev\Megamarket\Repository\MegamarketTokenByProfile\MegamarketTokenByProfileInterface;
 use BaksDev\Megamarket\Type\Authorization\MegamarketAuthorizationToken;
 use DomainException;
 use InvalidArgumentException;
@@ -45,12 +45,12 @@ abstract class Megamarket
 
     private ?MegamarketAuthorizationToken $AuthorizationToken = null;
 
-    private YaMarketTokenByProfileInterface $TokenByProfile;
+    private MegamarketTokenByProfileInterface $TokenByProfile;
 
     private array $headers;
 
     public function __construct(
-        YaMarketTokenByProfileInterface $TokenByProfile,
+        MegamarketTokenByProfileInterface $TokenByProfile,
         LoggerInterface $WildberriesLogger,
     )
     {
@@ -100,12 +100,14 @@ abstract class Megamarket
             }
         }
 
-        $this->headers = ['Authorization' => 'Bearer '.$this->AuthorizationToken->getToken()];
+        //$this->headers = ['Authorization' => 'Bearer '.$this->AuthorizationToken->getToken()];
 
         return new RetryableHttpClient(
-            HttpClient::create(['headers' => $this->headers])
+            HttpClient::create(/*['headers' => $this->headers]*/)
                 ->withOptions([
-                    'base_uri' => 'https://api.megamarket.tech',
+                    //'base_uri' => 'https://api.megamarket.tech',
+                    /** TODO: */
+                    'base_uri' => 'https://api-test.megamarket.tech',
                     'verify_host' => false
                 ])
         );
@@ -119,9 +121,14 @@ abstract class Megamarket
         return $this->profile;
     }
 
-    protected function getBusiness(): int
+//    protected function getBusiness(): int
+//    {
+//        return $this->AuthorizationToken->getBusiness();
+//    }
+
+    protected function getToken(): string
     {
-        return $this->AuthorizationToken->getBusiness();
+        return $this->AuthorizationToken->getToken();
     }
 
     protected function getCompany(): int

@@ -74,9 +74,7 @@ final class MegamarketTokenForm extends AbstractType
 
         $builder->add('token', TextareaType::class, ['required' => false]);
 
-        $builder->add('company', NumberType::class);
-
-        $builder->add('business', NumberType::class);
+        $builder->add('company', NumberType::class); //153373
 
         $builder->add('active', CheckboxType::class, ['required' => false]);
 

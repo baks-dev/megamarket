@@ -42,22 +42,16 @@ final class MegamarketAuthorizationToken
     private readonly string $token;
 
     /**
-     * Идентификатор компании
+     * Идентификатор компании (личного кабинета)
      */
     private readonly int $company;
 
-
-    /**
-     * Идентификатор кабинета
-     */
-    private readonly int $business;
 
 
     public function __construct(
         UserProfileUid|string $profile,
         string $token,
-        int|string $company,
-        int|string $business
+        int|string $company
     )
     {
         if(is_string($profile))
@@ -68,7 +62,6 @@ final class MegamarketAuthorizationToken
         $this->profile = $profile;
         $this->token = $token;
         $this->company = (int) $company;
-        $this->business = (int) $business;
     }
 
 
@@ -88,10 +81,6 @@ final class MegamarketAuthorizationToken
         return $this->company;
     }
 
-    public function getBusiness(): int
-    {
-        return $this->business;
-    }
 
 
 }

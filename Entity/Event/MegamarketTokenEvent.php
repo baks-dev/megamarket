@@ -64,21 +64,12 @@ class MegamarketTokenEvent extends EntityEvent
     #[ORM\Column(type: Types::TEXT)]
     private string $token;
 
-
     /**
-     * Идентификатор компании
+     * Идентификатор компании (личного кабинета)
      */
     #[Assert\NotBlank]
     #[ORM\Column(type: Types::INTEGER, nullable: true)] // 85604808
     private int $company;
-
-
-    /**
-     * Идентификатор кабинета
-     */
-    #[Assert\NotBlank]
-    #[ORM\Column(type: Types::INTEGER)]
-    private int $business;
 
 
     /**

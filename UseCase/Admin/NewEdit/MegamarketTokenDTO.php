@@ -59,11 +59,6 @@ final class MegamarketTokenDTO implements MegamarketTokenEventInterface
     #[Assert\NotBlank]
     private int $company;
 
-    /**
-     * Идентификатор кабинета
-     */
-    #[Assert\NotBlank]
-    private int $business;
 
 
     /**
