@@ -5,7 +5,7 @@
 
 Модуль Megamarket Api
 
-## Установкал
+## Установка
 
 ``` bash
 $ composer require baks-dev/megamarket
