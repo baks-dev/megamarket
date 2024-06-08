@@ -1,6 +1,6 @@
 <?php
 /*
- *  Copyright 2023.  Baks.dev <admin@baks.dev>
+ *  Copyright 2024.  Baks.dev <admin@baks.dev>
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -23,23 +23,24 @@
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use BaksDev\Megamarket\Type\Event\MegamarketTokenEventType;
-use BaksDev\Megamarket\Type\Event\MegamarketTokenEventUid;
-use Symfony\Config\DoctrineConfig;
+use BaksDev\Megamarket\BaksDevMegamarketBundle;
 
-return static function(DoctrineConfig $doctrine, ContainerConfigurator $configurator): void {
+return static function(ContainerConfigurator $configurator) {
 
-    $doctrine->dbal()->type(MegamarketTokenEventUid::TYPE)->class(MegamarketTokenEventType::class);
+    $services = $configurator->services()
+        ->defaults()
+        ->autowire()
+        ->autoconfigure();
 
-    $emDefault = $doctrine->orm()->entityManager('default')->autoMapping(true);
+    $NAMESPACE = BaksDevMegamarketBundle::NAMESPACE;
+    $PATH = BaksDevMegamarketBundle::PATH;
 
-    $MODULE = substr(__DIR__, 0, strpos(__DIR__, "Resources"));
+    $services
+        ->load($NAMESPACE, $PATH)
+        ->exclude([
+            $PATH.'{Entity,Resources,Type}',
+            $PATH.'**/*Message.php',
+            $PATH.'**/*DTO.php',
+        ]);
 
-    $emDefault
-        ->mapping('yandex-market')
-        ->type('attribute')
-        ->dir($MODULE.'Entity')
-        ->isBundle(false)
-        ->prefix('BaksDev\Yandex\Market\Entity')
-        ->alias('yandex-market');
 };
