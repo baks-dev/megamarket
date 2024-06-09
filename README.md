@@ -1,6 +1,6 @@
 # BaksDev Api Megamarket
 
-[![Version](https://img.shields.io/badge/version-7.1.1-blue)](https://github.com/baks-dev/megamarket/releases)
+[![Version](https://img.shields.io/badge/version-7.1.2-blue)](https://github.com/baks-dev/megamarket/releases)
 ![php 8.3+](https://img.shields.io/badge/php-min%208.3-red.svg)
 
 Модуль Megamarket Api
@@ -12,6 +12,12 @@ $ composer require baks-dev/megamarket
 ```
 
 ## Дополнительно
+
+Установка конфигурации и файловых ресурсов:
+
+``` bash
+$ php bin/console baks:assets:install
+```
 
 Каждому токену добавляем свой транспорт очереди
 
@@ -28,7 +34,7 @@ $messenger
 ->service(null);
 ```
 
-Тесты
+## Тестирование
 
 ``` bash
 $ php bin/phpunit --group=megamarket
