@@ -38,30 +38,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 final class MegamarketTokenHandler extends AbstractHandler
 {
 
-//    private EntityManagerInterface $entityManager;
-//
-//    private ValidatorInterface $validator;
-//
-//    private LoggerInterface $logger;
-//
-//    private MessageDispatchInterface $messageDispatch;
-//
-//
-//    public function __construct(
-//        EntityManagerInterface $entityManager,
-//        ValidatorInterface $validator,
-//        LoggerInterface $logger,
-//        MessageDispatchInterface $messageDispatch,
-//    )
-//    {
-//        $this->entityManager = $entityManager;
-//        $this->validator = $validator;
-//        $this->logger = $logger;
-//        $this->messageDispatch = $messageDispatch;
-//
-//    }
-
-
     /** @see Megamarket */
     public function handle(
         MegamarketTokenDTO $command
@@ -97,115 +73,7 @@ final class MegamarketTokenHandler extends AbstractHandler
             transport: 'megamarket'
         );
 
-
         return $this->main;
     }
 
-
-
-    /** @see MegamarketToken */
-    public function _handle(
-        MegamarketTokenDTO $command,
-    ): string|MegamarketToken
-    {
-        /**
-         *  Валидация DTO
-         */
-        $errors = $this->validator->validate($command);
-
-        if(count($errors) > 0)
-        {
-            /** Ошибка валидации */
-            $uniqid = uniqid('', false);
-            $this->logger->error(sprintf('%s: %s', $uniqid, $errors), [__FILE__.':'.__LINE__]);
-
-            return $uniqid;
-        }
-
-        if($command->getEvent())
-        {
-            $EventRepo = $this->entityManager->getRepository(MegamarketTokenEvent::class)
-                ->find(
-                    $command->getEvent(),
-                );
-
-            if($EventRepo === null)
-            {
-                $uniqid = uniqid('', false);
-                $errorsString = sprintf(
-                    'Not found %s by id: %s',
-                    MegamarketTokenEvent::class,
-                    $command->getEvent(),
-                );
-                $this->logger->error($uniqid.': '.$errorsString);
-
-                return $uniqid;
-            }
-
-            $EventRepo->setEntity($command);
-            $EventRepo->setEntityManager($this->entityManager);
-            $Event = $EventRepo->cloneEntity();
-        }
-        else
-        {
-            $Event = new MegamarketTokenEvent();
-            $Event->setEntity($command);
-            $this->entityManager->persist($Event);
-        }
-
-
-        /** @var MegamarketToken $Main */
-        $Main = $this->entityManager->getRepository(MegamarketToken::class)
-            ->find($command->getProfile());
-
-        if(empty($Main))
-        {
-            $Main = new MegamarketToken($command->getProfile());
-            $this->entityManager->persist($Main);
-        }
-
-        /* присваиваем событие корню */
-        $Main->setEvent($Event);
-
-
-        /**
-         * Валидация Event
-         */
-
-        $errors = $this->validator->validate($Event);
-
-        if(count($errors) > 0)
-        {
-            /** Ошибка валидации */
-            $uniqid = uniqid('', false);
-            $this->logger->error(sprintf('%s: %s', $uniqid, $errors), [__FILE__.':'.__LINE__]);
-
-            return $uniqid;
-        }
-
-        /**
-         * Валидация Main
-         */
-        $errors = $this->validator->validate($Main);
-
-        if(count($errors) > 0)
-        {
-            /** Ошибка валидации */
-            $uniqid = uniqid('', false);
-            $this->logger->error(sprintf('%s: %s', $uniqid, $errors), [__FILE__.':'.__LINE__]);
-
-            return $uniqid;
-        }
-
-
-        $this->entityManager->flush();
-
-        /* Отправляем сообщение в шину */
-        $this->messageDispatch->dispatch(
-            message: new MegamarketTokenMessage($Main->getId(), $Main->getEvent(), $command->getEvent()),
-            transport: 'megamarket',
-        );
-
-        return $Main;
-    }
 }

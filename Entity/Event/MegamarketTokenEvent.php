@@ -101,6 +101,12 @@ class MegamarketTokenEvent extends EntityEvent
         return (string) $this->id;
     }
 
+    public function setMain(UserProfileUid $profile): self
+    {
+        $this->profile = $profile;
+        return $this;
+    }
+
     public function getDto($dto): mixed
     {
         $dto = is_string($dto) && class_exists($dto) ? new $dto() : $dto;

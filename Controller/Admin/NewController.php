@@ -44,20 +44,18 @@ final class NewController extends AbstractController
     #[Route('/admin/megamarket/token/new', name: 'admin.newedit.new', methods: ['GET', 'POST'])]
     public function news(
         Request $request,
-        MegamarketTokenHandler $YaMarketTokenHandler,
-        LoggerInterface $logger
+        MegamarketTokenHandler $MegamarketTokenHandler
     ): Response
     {
+        $MegamarketTokenDTO = new MegamarketTokenDTO();
 
-        $YaMarketTokenDTO = new MegamarketTokenDTO();
-
-        if($this->getAdminFilterProfile())
+        if(null !== $this->getAdminFilterProfile())
         {
-            $YaMarketTokenDTO->setProfile($this->getAdminFilterProfile());
+            $MegamarketTokenDTO->setProfile($this->getProfileUid());
         }
 
         // Форма
-        $form = $this->createForm(MegamarketTokenForm::class, $YaMarketTokenDTO, [
+        $form = $this->createForm(MegamarketTokenForm::class, $MegamarketTokenDTO, [
             'action' => $this->generateUrl('megamarket:admin.newedit.new'),
         ]);
 
@@ -67,16 +65,20 @@ final class NewController extends AbstractController
         {
             $this->refreshTokenForm($form);
 
-            $YaMarketToken = $YaMarketTokenHandler->handle($YaMarketTokenDTO);
+            $MegamarketToken = $MegamarketTokenHandler->handle($MegamarketTokenDTO);
 
-            if($YaMarketToken instanceof MegamarketToken)
+            if($MegamarketToken instanceof MegamarketToken)
             {
-                $this->addFlash('breadcrumb.new', 'success.new', 'megamarket.admin');
+                $this->addFlash(
+                    'breadcrumb.new',
+                    'success.new',
+                    'megamarket.admin'
+                );
 
                 return $this->redirectToRoute('megamarket:admin.index');
             }
 
-            $this->addFlash('breadcrumb.new', 'danger.new', 'megamarket.admin', $YaMarketToken);
+            $this->addFlash('breadcrumb.new', 'danger.new', 'megamarket.admin', $MegamarketToken);
 
             return $this->redirectToReferer();
         }

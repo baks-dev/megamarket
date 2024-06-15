@@ -46,35 +46,28 @@ final class EditController extends AbstractController
     #[Route('/admin/megamarket/token/edit/{id}', name: 'admin.newedit.edit', methods: ['GET', 'POST'])]
     public function edit(
         Request $request,
-        #[MapEntity] MegamarketTokenEvent $YaMarketTokenEvent,
-        MegamarketTokenHandler $YaMarketTokenHandler,
+        #[MapEntity] MegamarketTokenEvent $MegamarketTokenEvent,
+        MegamarketTokenHandler $MegamarketTokenHandler,
     ): Response
     {
 
-        $YaMarketTokenDTO = new MegamarketTokenDTO();
-
-        //        dump($YaMarketTokenEvent);
-        //
-        //        dump(''.$this->getProfileUid());
-        //        dump(''.$YaMarketTokenDTO->getProfile());
-        //
-        //        dump($this->getProfileUid()?->equals($YaMarketTokenDTO->getProfile()));
+        $MegamarketTokenDTO = new MegamarketTokenDTO();
 
         /** Запрещаем редактировать чужой токен */
-        if($this->getAdminFilterProfile() === null || $this->getProfileUid()?->equals($YaMarketTokenEvent->getProfile()) === true)
+        if($this->getAdminFilterProfile() === null || $this->getProfileUid()?->equals($MegamarketTokenEvent->getProfile()) === true)
         {
-            $YaMarketTokenEvent->getDto($YaMarketTokenDTO);
+            $MegamarketTokenEvent->getDto($MegamarketTokenDTO);
         }
 
         if($request->getMethod() === 'GET')
         {
-            $YaMarketTokenDTO->hiddenToken();
+            $MegamarketTokenDTO->hiddenToken();
         }
 
         // Форма
-        $form = $this->createForm(MegamarketTokenForm::class, $YaMarketTokenDTO, [
+        $form = $this->createForm(MegamarketTokenForm::class, $MegamarketTokenDTO, [
             'action' => $this->generateUrl('megamarket:admin.newedit.edit',
-                ['id' => $YaMarketTokenDTO->getEvent() ?: new MegamarketTokenEventUid()]),
+                ['id' => $MegamarketTokenDTO->getEvent() ?: new MegamarketTokenEventUid()]),
         ]);
 
         $form->handleRequest($request);
@@ -84,22 +77,22 @@ final class EditController extends AbstractController
             $this->refreshTokenForm($form);
 
             /** Запрещаем редактировать чужой токен */
-            if($this->getAdminFilterProfile() && $this->getAdminFilterProfile()->equals($YaMarketTokenDTO->getProfile()) === false)
+            if($this->getAdminFilterProfile() && $this->getAdminFilterProfile()->equals($MegamarketTokenDTO->getProfile()) === false)
             {
                 $this->addFlash('breadcrumb.edit', 'danger.edit', 'megamarket.admin', '404');
                 return $this->redirectToReferer();
             }
 
-            $YaMarketToken = $YaMarketTokenHandler->handle($YaMarketTokenDTO);
+            $MegamarketToken = $MegamarketTokenHandler->handle($MegamarketTokenDTO);
 
-            if($YaMarketToken instanceof MegamarketToken)
+            if($MegamarketToken instanceof MegamarketToken)
             {
                 $this->addFlash('breadcrumb.edit', 'success.edit', 'megamarket.admin');
 
                 return $this->redirectToRoute('megamarket:admin.index');
             }
 
-            $this->addFlash('breadcrumb.edit', 'danger.edit', 'megamarket.admin', $YaMarketToken);
+            $this->addFlash('breadcrumb.edit', 'danger.edit', 'megamarket.admin', $MegamarketToken);
 
             return $this->redirectToReferer();
         }

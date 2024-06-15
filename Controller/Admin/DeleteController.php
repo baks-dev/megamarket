@@ -42,19 +42,17 @@ use Symfony\Component\Routing\Annotation\Route;
 #[RoleSecurity('ROLE_MEGAMARKET_TOKEN_DELETE')]
 final class DeleteController extends AbstractController
 {
-
     #[Route('/admin/megamarket/token/delete/{id}', name: 'admin.delete', methods: ['GET', 'POST'])]
     public function delete(
         Request $request,
-        #[MapEntity] MegamarketTokenEvent $YaMarketTokenEvent,
-        MegamarketTokenDeleteHandler $YaMarketTokenDeleteHandler,
+        #[MapEntity] MegamarketTokenEvent $MegamarketTokenEvent,
+        MegamarketTokenDeleteHandler $MegamarketTokenDeleteHandler,
     ): Response
     {
-
-        $YaMarketTokenDeleteDTO = new MegamarketTokenDeleteDTO();
-        $YaMarketTokenEvent->getDto($YaMarketTokenDeleteDTO);
-        $form = $this->createForm(MegamarketTokenDeleteForm::class, $YaMarketTokenDeleteDTO, [
-            'action' => $this->generateUrl('megamarket:admin.delete', ['id' => $YaMarketTokenDeleteDTO->getEvent()]),
+        $MegamarketTokenDeleteDTO = new MegamarketTokenDeleteDTO();
+        $MegamarketTokenEvent->getDto($MegamarketTokenDeleteDTO);
+        $form = $this->createForm(MegamarketTokenDeleteForm::class, $MegamarketTokenDeleteDTO, [
+            'action' => $this->generateUrl('megamarket:admin.delete', ['id' => $MegamarketTokenDeleteDTO->getEvent()]),
         ]);
         $form->handleRequest($request);
 
@@ -62,9 +60,9 @@ final class DeleteController extends AbstractController
         {
             $this->refreshTokenForm($form);
 
-            $YaMarketToken = $YaMarketTokenDeleteHandler->handle($YaMarketTokenDeleteDTO);
+            $MegamarketToken = $MegamarketTokenDeleteHandler->handle($MegamarketTokenDeleteDTO);
 
-            if($YaMarketToken instanceof MegamarketToken)
+            if($MegamarketToken instanceof MegamarketToken)
             {
                 $this->addFlash('breadcrumb.delete', 'success.delete', 'megamarket.admin');
 
@@ -75,7 +73,7 @@ final class DeleteController extends AbstractController
                 'breadcrumb.delete',
                 'danger.delete',
                 'megamarket.admin',
-                $YaMarketToken,
+                $MegamarketToken,
             );
 
             return $this->redirectToRoute('megamarket:admin.index', status: 400);

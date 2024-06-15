@@ -25,6 +25,7 @@ declare(strict_types=1);
 
 namespace BaksDev\Megamarket\Api;
 
+use App\Kernel;
 use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 
 use BaksDev\Megamarket\Repository\MegamarketTokenByProfile\MegamarketTokenByProfileInterface;
@@ -105,9 +106,7 @@ abstract class Megamarket
         return new RetryableHttpClient(
             HttpClient::create(/*['headers' => $this->headers]*/)
                 ->withOptions([
-                    //'base_uri' => 'https://api.megamarket.tech',
-                    /** TODO: */
-                    'base_uri' => 'https://api-test.megamarket.tech',
+                    'base_uri' => Kernel::isTestEnvironment() ? 'https://api-test.megamarket.tech' : 'https://api.megamarket.tech',
                     'verify_host' => false
                 ])
         );
