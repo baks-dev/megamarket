@@ -26,20 +26,17 @@ declare(strict_types=1);
 namespace BaksDev\Megamarket\Api;
 
 use App\Kernel;
-use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
-
 use BaksDev\Megamarket\Repository\MegamarketTokenByProfile\MegamarketTokenByProfileInterface;
 use BaksDev\Megamarket\Type\Authorization\MegamarketAuthorizationToken;
+use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 use DomainException;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpClient\RetryableHttpClient;
 
 abstract class Megamarket
 {
-
     protected LoggerInterface $logger;
 
     protected ?UserProfileUid $profile = null;
@@ -53,8 +50,7 @@ abstract class Megamarket
     public function __construct(
         MegamarketTokenByProfileInterface $TokenByProfile,
         LoggerInterface $WildberriesLogger,
-    )
-    {
+    ) {
         $this->TokenByProfile = $TokenByProfile;
         $this->logger = $WildberriesLogger;
     }
@@ -120,10 +116,10 @@ abstract class Megamarket
         return $this->profile;
     }
 
-//    protected function getBusiness(): int
-//    {
-//        return $this->AuthorizationToken->getBusiness();
-//    }
+    //    protected function getBusiness(): int
+    //    {
+    //        return $this->AuthorizationToken->getBusiness();
+    //    }
 
     protected function getToken(): string
     {
@@ -141,12 +137,12 @@ abstract class Megamarket
         $this->headers['Content-Type'] = 'application/json; charset=utf-8';
 
         return '-H "'.implode('" -H "', array_map(
-                function($key, $value) {
-                    return "$key: $value";
-                },
-                array_keys($this->headers),
-                $this->headers
-            )).'"';
+            function ($key, $value) {
+                return "$key: $value";
+            },
+            array_keys($this->headers),
+            $this->headers
+        )).'"';
     }
 
 }
