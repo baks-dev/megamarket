@@ -30,5 +30,7 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 #[AsMessageHandler(priority: 100)]
 final class MegamarketTokenDispatch
 {
-    public function __invoke(MegamarketTokenMessage $message): void {}
+    public function __invoke(MegamarketTokenMessage $message): void
+    {
+    }
 }
