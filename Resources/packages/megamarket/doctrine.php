@@ -35,10 +35,10 @@ return static function(DoctrineConfig $doctrine, ContainerConfigurator $configur
     $emDefault = $doctrine->orm()->entityManager('default')->autoMapping(true);
 
     $emDefault
-        ->mapping('yandex-market')
+        ->mapping('megamarket')
         ->type('attribute')
         ->dir(BaksDevMegamarketBundle::PATH.'Entity')
         ->isBundle(false)
-        ->prefix('BaksDev\Yandex\Market\Entity')
-        ->alias('yandex-market');
+        ->prefix('BaksDev\Megamarket\Entity')
+        ->alias('megamarket');
 };
