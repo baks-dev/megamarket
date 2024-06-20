@@ -18,11 +18,10 @@
 
 namespace BaksDev\Megamarket\Entity;
 
-
-use BaksDev\Users\Profile\UserProfile\Entity\UserProfile;
-use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 use BaksDev\Megamarket\Entity\Event\MegamarketTokenEvent;
 use BaksDev\Megamarket\Type\Event\MegamarketTokenEventUid;
+use BaksDev\Users\Profile\UserProfile\Entity\UserProfile;
+use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 

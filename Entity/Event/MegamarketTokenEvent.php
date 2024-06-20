@@ -23,11 +23,11 @@
 
 namespace BaksDev\Megamarket\Entity\Event;
 
-
 use BaksDev\Core\Entity\EntityEvent;
-use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
+use BaksDev\Megamarket\Entity\MegamarketToken;
 use BaksDev\Megamarket\Entity\Modify\MegamarketTokenModify;
 use BaksDev\Megamarket\Type\Event\MegamarketTokenEventUid;
+use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
@@ -101,9 +101,9 @@ class MegamarketTokenEvent extends EntityEvent
         return (string) $this->id;
     }
 
-    public function setMain(UserProfileUid $profile): self
+    public function setMain(UserProfileUid|MegamarketToken $profile): self
     {
-        $this->profile = $profile;
+        $this->profile = $profile instanceof MegamarketToken ? $profile->getId() : $profile;
         return $this;
     }
 

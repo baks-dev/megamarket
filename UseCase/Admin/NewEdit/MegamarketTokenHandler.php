@@ -37,12 +37,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class MegamarketTokenHandler extends AbstractHandler
 {
-
     /** @see Megamarket */
     public function handle(
         MegamarketTokenDTO $command
-    ): string|MegamarketToken
-    {
+    ): string|MegamarketToken {
 
         /** Валидация DTO  */
         $this->validatorCollection->add($command);
