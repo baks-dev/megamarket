@@ -62,7 +62,7 @@ final class Header implements MenuAdminInterface
      */
     public function getSortMenu(): int
     {
-        return 100;
+        return 430;
     }
 
     /**
