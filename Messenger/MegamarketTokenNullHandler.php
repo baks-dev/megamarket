@@ -28,9 +28,7 @@ namespace BaksDev\Megamarket\Messenger;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler(priority: 100)]
-final class MegamarketTokenDispatch
+final class MegamarketTokenNullHandler
 {
-    public function __invoke(MegamarketTokenMessage $message): void
-    {
-    }
+    public function __invoke(MegamarketTokenMessage $message): void {}
 }

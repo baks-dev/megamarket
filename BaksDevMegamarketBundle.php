@@ -25,7 +25,6 @@ declare(strict_types=1);
 
 namespace BaksDev\Megamarket;
 
-use DirectoryIterator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
@@ -36,6 +35,9 @@ class BaksDevMegamarketBundle extends AbstractBundle
 
     public const PATH = __DIR__.DIRECTORY_SEPARATOR;
 
+    /**
+     * @note: Индекс сортировки 430
+     */
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
         $services = $container->services()

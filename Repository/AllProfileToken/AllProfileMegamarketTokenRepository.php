@@ -26,22 +26,21 @@ declare(strict_types=1);
 namespace BaksDev\Megamarket\Repository\AllProfileToken;
 
 use BaksDev\Core\Doctrine\DBALQueryBuilder;
+use BaksDev\Megamarket\Entity\Event\MegamarketTokenEvent;
+use BaksDev\Megamarket\Entity\MegamarketToken;
 use BaksDev\Users\Profile\UserProfile\Entity\Info\UserProfileInfo;
 use BaksDev\Users\Profile\UserProfile\Entity\Personal\UserProfilePersonal;
 use BaksDev\Users\Profile\UserProfile\Entity\UserProfile;
 use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 use BaksDev\Users\Profile\UserProfile\Type\UserProfileStatus\Status\UserProfileStatusActive;
 use BaksDev\Users\Profile\UserProfile\Type\UserProfileStatus\UserProfileStatus;
-use BaksDev\Megamarket\Entity\Event\MegamarketTokenEvent;
-use BaksDev\Megamarket\Entity\MegamarketToken;
 use Generator;
 
 final class AllProfileMegamarketTokenRepository implements AllProfileMegamarketTokenInterface
 {
-
     private DBALQueryBuilder $DBALQueryBuilder;
 
-    private bool $active;
+    private bool $active = false;
 
     public function __construct(DBALQueryBuilder $DBALQueryBuilder)
     {
