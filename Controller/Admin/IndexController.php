@@ -44,12 +44,13 @@ final class IndexController extends AbstractController
         Request $request,
         AllMegamarketTokenInterface $paginator,
         int $page = 0,
-    ): Response
-    {
+    ): Response {
 
         // Поиск
         $search = new SearchDTO();
-        $searchForm = $this->createForm(SearchForm::class, $search,
+        $searchForm = $this->createForm(
+            SearchForm::class,
+            $search,
             ['action' => $this->generateUrl('megamarket:admin.index')]
         );
 

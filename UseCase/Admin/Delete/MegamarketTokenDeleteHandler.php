@@ -25,124 +25,46 @@ declare(strict_types=1);
 
 namespace BaksDev\Megamarket\UseCase\Admin\Delete;
 
-use BaksDev\Core\Messenger\MessageDispatchInterface;
-use BaksDev\Users\UsersTable\Entity\Actions\Event\UsersTableActionsEvent;
+use BaksDev\Core\Entity\AbstractHandler;
 use BaksDev\Megamarket\Entity\Event\MegamarketTokenEvent;
 use BaksDev\Megamarket\Entity\MegamarketToken;
 use BaksDev\Megamarket\Messenger\MegamarketTokenMessage;
-use Doctrine\ORM\EntityManagerInterface;
-use Psr\Log\LoggerInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
+use DomainException;
 
-final class MegamarketTokenDeleteHandler
+final class MegamarketTokenDeleteHandler extends AbstractHandler
 {
-
-    private EntityManagerInterface $entityManager;
-
-    private ValidatorInterface $validator;
-
-    private LoggerInterface $logger;
-
-    private MessageDispatchInterface $messageDispatch;
-
-
-    public function __construct(
-        EntityManagerInterface $entityManager,
-        ValidatorInterface $validator,
-        LoggerInterface $logger,
-        MessageDispatchInterface $messageDispatch,
-    )
+    public function handle(MegamarketTokenDeleteDTO $command): string|MegamarketToken
     {
-        $this->entityManager = $entityManager;
-        $this->validator = $validator;
-        $this->logger = $logger;
-        $this->messageDispatch = $messageDispatch;
+        /* Валидация DTO  */
+        $this->validatorCollection->add($command);
 
-    }
+        $this->main = new MegamarketToken($command->getProfile());
+        $this->event = new MegamarketTokenEvent();
 
-
-    /** @see UsersTableActionsDelete */
-    public function handle(
-        MegamarketTokenDeleteDTO $command,
-    ): string|MegamarketToken
-    {
-        /**
-         *  Валидация UsersTableActionsDeleteDTO
-         */
-        $errors = $this->validator->validate($command);
-
-        if(count($errors) > 0)
+        try
         {
-            /** Ошибка валидации */
-            $uniqid = uniqid('', false);
-            $this->logger->error(sprintf('%s: %s', $uniqid, $errors), [__FILE__.':'.__LINE__]);
-
-            return $uniqid;
+            $this->preRemove($command);
+        }
+        catch(DomainException $errorUniqid)
+        {
+            return $errorUniqid->getMessage();
         }
 
-        /* Обязательно передается идентификатор события */
-        if($command->getEvent() === null)
+        /* Валидация всех объектов */
+        if($this->validatorCollection->isInvalid())
         {
-            $uniqid = uniqid('', false);
-            $errorsString = sprintf(
-                'Not found event id in class: %s',
-                $command::class,
-            );
-            $this->logger->error($uniqid.': '.$errorsString);
-
-            return $uniqid;
+            return $this->validatorCollection->getErrorUniqid();
         }
-
-        /** Получаем событие */
-        $Event = $this->entityManager->getRepository(MegamarketTokenEvent::class)
-            ->find($command->getEvent());
-
-        if($Event === null)
-        {
-            $uniqid = uniqid('', false);
-            $errorsString = sprintf(
-                'Not found %s by id: %s',
-                UsersTableActionsEvent::class,
-                $command->getEvent(),
-            );
-            $this->logger->error($uniqid.': '.$errorsString);
-
-            return $uniqid;
-        }
-
-        /** Получаем корень агрегата */
-        $Main = $this->entityManager->getRepository(MegamarketToken::class)
-            ->findOneBy(['event' => $command->getEvent()]);
-
-        if(empty($Main))
-        {
-            $uniqid = uniqid('', false);
-            $errorsString = sprintf(
-                'Not found %s by event: %s',
-                MegamarketToken::class,
-                $command->getEvent(),
-            );
-            $this->logger->error($uniqid.': '.$errorsString);
-
-            return $uniqid;
-        }
-
-        /** Применяем изменения к событию */
-        $Event->setEntity($command);
-        $this->entityManager->persist($Event);
-
-        /* Удаляем корень агрегата */
-        $this->entityManager->remove($Main);
 
         $this->entityManager->flush();
 
         /* Отправляем сообщение в шину */
         $this->messageDispatch->dispatch(
-            message: new MegamarketTokenMessage($Main->getId(), $Main->getEvent(), $command->getEvent()),
+            message: new MegamarketTokenMessage($this->main->getId(), $this->main->getEvent(), $command->getEvent()),
             transport: 'megamarket',
         );
 
-        return $Main;
-
+        return $this->main;
     }
+
 }

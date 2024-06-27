@@ -28,13 +28,11 @@ namespace BaksDev\Megamarket\Security;
 use BaksDev\Menu\Admin\Command\Upgrade\MenuAdminInterface;
 use BaksDev\Menu\Admin\Type\SectionGroup\Group\Collection\MenuAdminSectionGroupCollectionInterface;
 use BaksDev\Menu\Admin\Type\SectionGroup\Group\MenuGroupSettings;
-use BaksDev\Orders\Order\Security\MenuGroupMarketplace;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 
 #[AutoconfigureTag('baks.menu.admin')]
 final class Header implements MenuAdminInterface
 {
-
     public function getRole(): string
     {
         return Role::ROLE;

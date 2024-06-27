@@ -101,7 +101,7 @@ class MegamarketTokenEvent extends EntityEvent
         return (string) $this->id;
     }
 
-    public function setMain(UserProfileUid|MegamarketToken $profile): self
+    public function setMain(MegamarketToken|UserProfileUid $profile): self
     {
         $this->profile = $profile instanceof MegamarketToken ? $profile->getId() : $profile;
         return $this;

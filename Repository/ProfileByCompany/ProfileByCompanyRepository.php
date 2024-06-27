@@ -31,17 +31,9 @@ use BaksDev\Megamarket\Entity\MegamarketToken;
 use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 use Doctrine\DBAL\ParameterType;
 
-
 final class ProfileByCompanyRepository implements ProfileByCompanyInterface
 {
-    private DBALQueryBuilder $DBALQueryBuilder;
-
-    public function __construct(
-        DBALQueryBuilder $DBALQueryBuilder,
-    )
-    {
-        $this->DBALQueryBuilder = $DBALQueryBuilder;
-    }
+    public function __construct(private readonly DBALQueryBuilder $DBALQueryBuilder) {}
 
     /**
      * Метод возвращает профиль пользователя по идентификатору компании
@@ -54,8 +46,7 @@ final class ProfileByCompanyRepository implements ProfileByCompanyInterface
             ->from(MegamarketTokenEvent::class, 'event')
             ->where('event.active = true')
             ->andWhere('event.company = :company')
-            ->setParameter('company', $company, ParameterType::INTEGER)
-        ;
+            ->setParameter('company', $company, ParameterType::INTEGER);
 
         $dbal->join(
             'event',

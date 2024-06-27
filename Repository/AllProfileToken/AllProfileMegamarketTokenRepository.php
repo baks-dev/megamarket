@@ -38,14 +38,9 @@ use Generator;
 
 final class AllProfileMegamarketTokenRepository implements AllProfileMegamarketTokenInterface
 {
-    private DBALQueryBuilder $DBALQueryBuilder;
-
     private bool $active = false;
 
-    public function __construct(DBALQueryBuilder $DBALQueryBuilder)
-    {
-        $this->DBALQueryBuilder = $DBALQueryBuilder;
-    }
+    public function __construct(private readonly DBALQueryBuilder $DBALQueryBuilder) {}
 
     public function onlyActiveToken(): self
     {

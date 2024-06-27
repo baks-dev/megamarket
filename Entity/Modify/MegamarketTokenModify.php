@@ -25,15 +25,14 @@ declare(strict_types=1);
 
 namespace BaksDev\Megamarket\Entity\Modify;
 
-
 use BaksDev\Core\Entity\EntityEvent;
 use BaksDev\Core\Type\Ip\IpAddress;
-use BaksDev\Core\Type\Modify\ModifyAction;
 use BaksDev\Core\Type\Modify\Modify\ModifyActionNew;
 use BaksDev\Core\Type\Modify\Modify\ModifyActionUpdate;
+use BaksDev\Core\Type\Modify\ModifyAction;
+use BaksDev\Megamarket\Entity\Event\MegamarketTokenEvent;
 use BaksDev\Users\User\Entity\User;
 use BaksDev\Users\User\Type\Id\UserUid;
-use BaksDev\Megamarket\Entity\Event\MegamarketTokenEvent;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -47,7 +46,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Index(columns: ['action'])]
 class MegamarketTokenModify extends EntityEvent
 {
-
     /** ID события */
     #[Assert\NotBlank]
     #[ORM\Id]

@@ -48,8 +48,7 @@ final class EditController extends AbstractController
         Request $request,
         #[MapEntity] MegamarketTokenEvent $MegamarketTokenEvent,
         MegamarketTokenHandler $MegamarketTokenHandler,
-    ): Response
-    {
+    ): Response {
 
         $MegamarketTokenDTO = new MegamarketTokenDTO();
 
@@ -66,8 +65,10 @@ final class EditController extends AbstractController
 
         // Форма
         $form = $this->createForm(MegamarketTokenForm::class, $MegamarketTokenDTO, [
-            'action' => $this->generateUrl('megamarket:admin.newedit.edit',
-                ['id' => $MegamarketTokenDTO->getEvent() ?: new MegamarketTokenEventUid()]),
+            'action' => $this->generateUrl(
+                'megamarket:admin.newedit.edit',
+                ['id' => $MegamarketTokenDTO->getEvent() ?: new MegamarketTokenEventUid()]
+            ),
         ]);
 
         $form->handleRequest($request);

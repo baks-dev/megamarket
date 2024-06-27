@@ -47,10 +47,11 @@ final class DeleteController extends AbstractController
         Request $request,
         #[MapEntity] MegamarketTokenEvent $MegamarketTokenEvent,
         MegamarketTokenDeleteHandler $MegamarketTokenDeleteHandler,
-    ): Response
-    {
+    ): Response {
+
         $MegamarketTokenDeleteDTO = new MegamarketTokenDeleteDTO();
         $MegamarketTokenEvent->getDto($MegamarketTokenDeleteDTO);
+
         $form = $this->createForm(MegamarketTokenDeleteForm::class, $MegamarketTokenDeleteDTO, [
             'action' => $this->generateUrl('megamarket:admin.delete', ['id' => $MegamarketTokenDeleteDTO->getEvent()]),
         ]);

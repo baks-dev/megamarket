@@ -27,10 +27,8 @@ namespace BaksDev\Megamarket\Type\Authorization;
 
 use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 
-
 final class MegamarketAuthorizationToken
 {
-
     /**
      * ID настройки (профиль пользователя)
      */
@@ -47,13 +45,11 @@ final class MegamarketAuthorizationToken
     private readonly int $company;
 
 
-
     public function __construct(
         UserProfileUid|string $profile,
         string $token,
         int|string $company
-    )
-    {
+    ) {
         if(is_string($profile))
         {
             $profile = new UserProfileUid($profile);
@@ -80,7 +76,6 @@ final class MegamarketAuthorizationToken
     {
         return $this->company;
     }
-
 
 
 }

@@ -25,16 +25,15 @@ declare(strict_types=1);
 
 namespace BaksDev\Megamarket\UseCase\Admin\Delete;
 
-use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 use BaksDev\Megamarket\Entity\Event\MegamarketTokenEvent;
 use BaksDev\Megamarket\Entity\Event\MegamarketTokenEventInterface;
 use BaksDev\Megamarket\Type\Event\MegamarketTokenEventUid;
+use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /** @see MegamarketTokenEvent */
 final class MegamarketTokenDeleteDTO implements MegamarketTokenEventInterface
 {
-
     /**
      * Идентификатор события
      */
