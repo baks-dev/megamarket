@@ -23,26 +23,23 @@
 
 namespace BaksDev\Megamarket\Repository\MegamarketTokenByProfile;
 
-
 use BaksDev\Auth\Email\Type\EmailStatus\EmailStatus;
 use BaksDev\Auth\Email\Type\EmailStatus\Status\EmailStatusActive;
 use BaksDev\Core\Doctrine\DBALQueryBuilder;
 use BaksDev\Core\Doctrine\ORMQueryBuilder;
+use BaksDev\Megamarket\Entity\Event\MegamarketTokenEvent;
+use BaksDev\Megamarket\Entity\MegamarketToken;
+use BaksDev\Megamarket\Type\Authorization\MegamarketAuthorizationToken;
 use BaksDev\Users\Profile\UserProfile\Entity\Info\UserProfileInfo;
 use BaksDev\Users\Profile\UserProfile\Entity\UserProfile;
 use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 use BaksDev\Users\Profile\UserProfile\Type\UserProfileStatus\Status\UserProfileStatusActive;
 use BaksDev\Users\Profile\UserProfile\Type\UserProfileStatus\UserProfileStatus;
 use BaksDev\Users\User\Type\Id\UserUid;
-use BaksDev\Megamarket\Entity\Event\MegamarketTokenEvent;
-use BaksDev\Megamarket\Entity\MegamarketToken;
-use BaksDev\Megamarket\Type\Authorization\MegamarketAuthorizationToken;
-use InvalidArgumentException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 final class MegamarketTokenByProfileRepository implements MegamarketTokenByProfileInterface
 {
-
     private DBALQueryBuilder $DBALQueryBuilder;
 
     public function __construct(DBALQueryBuilder $DBALQueryBuilder)
@@ -69,14 +66,18 @@ final class MegamarketTokenByProfileRepository implements MegamarketTokenByProfi
             'event.id = token.event AND event.active = true',
         );
 
-        $qb->join(
-            'token',
-            UserProfileInfo::class,
-            'info',
-            'info.profile = token.id AND info.status = :status',
-        );
-
-        $qb->setParameter('status', new UserProfileStatus(UserProfileStatusActive::class), UserProfileStatus::TYPE);
+        $qb
+            ->join(
+                'token',
+                UserProfileInfo::class,
+                'info',
+                'info.profile = token.id AND info.status = :status',
+            )
+            ->setParameter(
+                'status',
+                UserProfileStatusActive::class,
+                UserProfileStatus::TYPE
+            );
 
         $qb->select('token.id AS profile');
         $qb->addSelect('event.token AS token');

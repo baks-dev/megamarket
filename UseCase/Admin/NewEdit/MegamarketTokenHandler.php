@@ -26,14 +26,10 @@ declare(strict_types=1);
 namespace BaksDev\Megamarket\UseCase\Admin\NewEdit;
 
 use BaksDev\Core\Entity\AbstractHandler;
-use BaksDev\Core\Messenger\MessageDispatchInterface;
 use BaksDev\Megamarket\Entity\Event\MegamarketTokenEvent;
 use BaksDev\Megamarket\Entity\MegamarketToken;
 use BaksDev\Megamarket\Messenger\MegamarketTokenMessage;
-use Doctrine\ORM\EntityManagerInterface;
 use DomainException;
-use Psr\Log\LoggerInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class MegamarketTokenHandler extends AbstractHandler
 {
