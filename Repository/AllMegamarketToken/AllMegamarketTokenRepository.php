@@ -103,6 +103,7 @@ final class AllMegamarketTokenRepository implements AllMegamarketTokenInterface
 
         // UserProfile
         $qb
+            ->addSelect('users_profile.id as users_profile_id')
             ->addSelect('users_profile.event as users_profile_event')
             ->leftJoin(
                 'token',
