@@ -30,5 +30,5 @@ interface ProfileByCompanyInterface
     /**
      * Метод возвращает профиль пользователя по идентификатору компании
      */
-    public function find(int $company): ?UserProfileUid;
+    public function find(int $company): UserProfileUid|false;
 }

@@ -45,7 +45,7 @@ final class MegamarketTokenByProfileRepository implements MegamarketTokenByProfi
     /**
      * Токен авторизации
      */
-    public function getToken(UserProfileUid $profile): ?MegamarketAuthorizationToken
+    public function getToken(UserProfileUid $profile): MegamarketAuthorizationToken|false
     {
         $qb = $this->DBALQueryBuilder->createQueryBuilder(self::class);
 

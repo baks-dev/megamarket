@@ -38,7 +38,7 @@ final class ProfileByCompanyRepository implements ProfileByCompanyInterface
     /**
      * Метод возвращает профиль пользователя по идентификатору компании
      */
-    public function find(int $company): ?UserProfileUid
+    public function find(int $company): UserProfileUid|false
     {
         $dbal = $this->DBALQueryBuilder->createQueryBuilder(self::class);
 

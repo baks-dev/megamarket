@@ -23,14 +23,14 @@
 
 namespace BaksDev\Megamarket\Repository\MegamarketTokenByProfile;
 
-use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 use BaksDev\Megamarket\Type\Authorization\MegamarketAuthorizationToken;
+use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 
 interface MegamarketTokenByProfileInterface
 {
     /**
      * Токен авторизации
      */
-    public function getToken(UserProfileUid $profile): ?MegamarketAuthorizationToken;
+    public function getToken(UserProfileUid $profile): MegamarketAuthorizationToken|false;
 
 }
