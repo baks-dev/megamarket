@@ -1,6 +1,6 @@
 <?php
 /*
- *  Copyright 2023.  Baks.dev <admin@baks.dev>
+ *  Copyright 2024.  Baks.dev <admin@baks.dev>
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -23,28 +23,12 @@
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use BaksDev\Megamarket\BaksDevMegamarketBundle;
 use Symfony\Config\FrameworkConfig;
 
-return static function(FrameworkConfig $framework) {
+return static function (FrameworkConfig $config) {
 
-    /** Транспорт отправки сообщений */
-    $messenger = $framework->messenger();
-
-    $messenger->transport('megamarket')
-        ->dsn('redis://%env(REDIS_PASSWORD)%@%env(REDIS_HOST)%:%env(REDIS_PORT)%?auto_setup=true')
-        ->options(['stream' => 'megamarket'])
-        ->failureTransport('failed-megamarket')
-        ->retryStrategy()
-        ->maxRetries(3)
-        ->delay(1000)
-        ->maxDelay(0)
-        ->multiplier(3) // увеличиваем задержку перед каждой повторной попыткой
-        ->service(null);
-
-    $failure = $framework->messenger();
-
-    $failure->transport('failed-megamarket')
-        ->dsn('%env(MESSENGER_TRANSPORT_DSN)%')
-        ->options(['queue_name' => 'failed-megamarket']);
-
+    $config
+        ->translator()
+        ->paths([BaksDevMegamarketBundle::PATH.implode(DIRECTORY_SEPARATOR, ['Resources', 'translations', ''])]); // .'Resources/translations/']);
 };

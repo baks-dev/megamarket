@@ -23,22 +23,28 @@
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use BaksDev\Megamarket\BaksDevMegamarketBundle;
-use BaksDev\Megamarket\Type\Event\MegamarketTokenEventType;
-use BaksDev\Megamarket\Type\Event\MegamarketTokenEventUid;
-use Symfony\Config\DoctrineConfig;
+use Symfony\Config\FrameworkConfig;
 
-return static function(DoctrineConfig $doctrine, ContainerConfigurator $configurator): void {
+return static function (FrameworkConfig $framework) {
 
-    $doctrine->dbal()->type(MegamarketTokenEventUid::TYPE)->class(MegamarketTokenEventType::class);
+    /** Транспорт отправки сообщений */
+    $messenger = $framework->messenger();
 
-    $emDefault = $doctrine->orm()->entityManager('default')->autoMapping(true);
+    $messenger->transport('megamarket')
+        ->dsn('redis://%env(REDIS_PASSWORD)%@%env(REDIS_HOST)%:%env(REDIS_PORT)%?auto_setup=true')
+        ->options(['stream' => 'megamarket'])
+        ->failureTransport('failed-megamarket')
+        ->retryStrategy()
+        ->maxRetries(3)
+        ->delay(1000)
+        ->maxDelay(0)
+        ->multiplier(3) // увеличиваем задержку перед каждой повторной попыткой
+        ->service(null);
 
-    $emDefault
-        ->mapping('megamarket')
-        ->type('attribute')
-        ->dir(BaksDevMegamarketBundle::PATH.'Entity')
-        ->isBundle(false)
-        ->prefix('BaksDev\Megamarket\Entity')
-        ->alias('megamarket');
+    $failure = $framework->messenger();
+
+    $failure->transport('failed-megamarket')
+        ->dsn('%env(MESSENGER_TRANSPORT_DSN)%')
+        ->options(['queue_name' => 'failed-megamarket']);
+
 };
