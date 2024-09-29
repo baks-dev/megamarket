@@ -30,6 +30,7 @@ use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -38,9 +39,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class MegamarketTokenForm extends AbstractType
 {
-
     private UserProfileChoiceInterface $profileChoice;
-
 
     public function __construct(UserProfileChoiceInterface $profileChoice)
     {
@@ -58,10 +57,10 @@ final class MegamarketTokenForm extends AbstractType
             /* TextType */
             $builder->add('profile', ChoiceType::class, [
                 'choices' => $this->profileChoice->getActiveUserProfile(),
-                'choice_value' => function(?UserProfileUid $profile) {
+                'choice_value' => function (?UserProfileUid $profile) {
                     return $profile?->getValue();
                 },
-                'choice_label' => function(UserProfileUid $profile) {
+                'choice_label' => function (UserProfileUid $profile) {
                     return $profile->getAttr();
                 },
                 'label' => false,
@@ -76,12 +75,17 @@ final class MegamarketTokenForm extends AbstractType
 
         $builder->add('company', NumberType::class); //153373
 
+        $builder->add('percent', IntegerType::class);
+
+        $builder->add('rate', IntegerType::class);
+
         $builder->add('active', CheckboxType::class, ['required' => false]);
 
 
         /* Сохранить ******************************************************/
         $builder->add(
-            'megamarket_token', SubmitType::class,
+            'megamarket_token',
+            SubmitType::class,
             ['label' => 'Save', 'label_html' => true, 'attr' => ['class' => 'btn-primary']]
         );
     }

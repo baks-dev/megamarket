@@ -27,29 +27,36 @@ namespace BaksDev\Megamarket\Type\Authorization;
 
 use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 
-final class MegamarketAuthorizationToken
+final readonly class MegamarketAuthorizationToken
 {
     /**
      * ID настройки (профиль пользователя)
      */
-    private readonly UserProfileUid $profile;
+    private UserProfileUid $profile;
 
     /**
      * Токен
      */
-    private readonly string $token;
+    private string $token;
 
     /**
      * Идентификатор компании (личного кабинета)
      */
-    private readonly int $company;
+    private int $company;
+
+    private ?int $percent;
+
+    private ?int $rate;
 
 
     public function __construct(
         UserProfileUid|string $profile,
         string $token,
-        int|string $company
+        int|string $company,
+        ?int $percent = 0,
+        ?int $rate = 0,
     ) {
+
         if(is_string($profile))
         {
             $profile = new UserProfileUid($profile);
@@ -58,6 +65,9 @@ final class MegamarketAuthorizationToken
         $this->profile = $profile;
         $this->token = $token;
         $this->company = (int) $company;
+
+        $this->percent = $percent ?? 0;
+        $this->rate = $rate ?? 0;
     }
 
 
@@ -65,7 +75,6 @@ final class MegamarketAuthorizationToken
     {
         return $this->profile;
     }
-
 
     public function getToken(): string
     {
@@ -77,5 +86,14 @@ final class MegamarketAuthorizationToken
         return $this->company;
     }
 
+    public function getPercent(): int
+    {
+        return $this->percent;
+    }
+
+    public function getRate(): int
+    {
+        return $this->rate;
+    }
 
 }

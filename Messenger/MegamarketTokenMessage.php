@@ -25,34 +25,16 @@ declare(strict_types=1);
 
 namespace BaksDev\Megamarket\Messenger;
 
-use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 use BaksDev\Megamarket\Type\Event\MegamarketTokenEventUid;
+use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 
-final class MegamarketTokenMessage
+final readonly class MegamarketTokenMessage
 {
-    /**
-     * Идентификатор
-     */
-    private UserProfileUid $id;
-
-    /**
-     * Идентификатор события
-     */
-    private MegamarketTokenEventUid $event;
-
-    /**
-     * Идентификатор предыдущего события
-     */
-    private ?MegamarketTokenEventUid $last;
-
-
-    public function __construct(UserProfileUid $id, MegamarketTokenEventUid $event, ?MegamarketTokenEventUid $last = null)
-    {
-        $this->id = $id;
-        $this->event = $event;
-        $this->last = $last;
-    }
-
+    public function __construct(
+        private UserProfileUid $id,
+        private MegamarketTokenEventUid $event,
+        private ?MegamarketTokenEventUid $last = null
+    ) {}
 
     /**
      * Идентификатор

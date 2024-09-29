@@ -25,9 +25,9 @@ declare(strict_types=1);
 
 namespace BaksDev\Megamarket\UseCase\Admin\NewEdit;
 
-use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 use BaksDev\Megamarket\Entity\Event\MegamarketTokenEventInterface;
 use BaksDev\Megamarket\Type\Event\MegamarketTokenEventUid;
+use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 use Doctrine\DBAL\Types\Types;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -59,13 +59,24 @@ final class MegamarketTokenDTO implements MegamarketTokenEventInterface
     #[Assert\NotBlank]
     private int $company;
 
+    /**
+     * Торговая наценка
+     */
+    #[Assert\NotBlank]
+    #[Assert\Range(min: 0, max: 100)]
+    private int $percent = 0;
 
+    /**
+     * Торговая надбавка на габариты товара
+     */
+    #[Assert\NotBlank]
+    #[Assert\Range(min: 0)]
+    private int $rate = 0;
 
     /**
      * Статус true = активен / false = заблокирован
      */
     private bool $active = true;
-
 
 
     public function setId(?MegamarketTokenEventUid $id): void
@@ -117,20 +128,6 @@ final class MegamarketTokenDTO implements MegamarketTokenEventInterface
 
 
     /**
-     * Business
-     */
-    public function getBusiness(): int
-    {
-        return $this->business;
-    }
-
-    public function setBusiness(int $business): self
-    {
-        $this->business = $business;
-        return $this;
-    }
-
-    /**
      * Company
      */
     public function getCompany(): int
@@ -157,4 +154,33 @@ final class MegamarketTokenDTO implements MegamarketTokenEventInterface
     {
         $this->active = $active;
     }
+
+    /**
+     * Percent
+     */
+    public function getPercent(): int
+    {
+        return $this->percent;
+    }
+
+    public function setPercent(?int $percent): self
+    {
+        $this->percent = $percent ?? 0;
+        return $this;
+    }
+
+    /**
+     * Rate
+     */
+    public function getRate(): int
+    {
+        return $this->rate;
+    }
+
+    public function setRate(?int $rate): self
+    {
+        $this->rate = $rate ?? 0;
+        return $this;
+    }
+
 }

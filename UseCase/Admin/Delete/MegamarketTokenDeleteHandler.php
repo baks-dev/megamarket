@@ -29,26 +29,16 @@ use BaksDev\Core\Entity\AbstractHandler;
 use BaksDev\Megamarket\Entity\Event\MegamarketTokenEvent;
 use BaksDev\Megamarket\Entity\MegamarketToken;
 use BaksDev\Megamarket\Messenger\MegamarketTokenMessage;
-use DomainException;
 
 final class MegamarketTokenDeleteHandler extends AbstractHandler
 {
     public function handle(MegamarketTokenDeleteDTO $command): string|MegamarketToken
     {
         /* Валидация DTO  */
-        $this->validatorCollection->add($command);
+        $this->setCommand($command);
 
-        $this->main = new MegamarketToken($command->getProfile());
-        $this->event = new MegamarketTokenEvent();
-
-        try
-        {
-            $this->preRemove($command);
-        }
-        catch(DomainException $errorUniqid)
-        {
-            return $errorUniqid->getMessage();
-        }
+        $MegamarketToken = new MegamarketToken($command->getProfile());
+        $this->preEventRemove($MegamarketToken, MegamarketTokenEvent::class);
 
         /* Валидация всех объектов */
         if($this->validatorCollection->isInvalid())

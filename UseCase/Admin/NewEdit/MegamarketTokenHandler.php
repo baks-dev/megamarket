@@ -29,29 +29,16 @@ use BaksDev\Core\Entity\AbstractHandler;
 use BaksDev\Megamarket\Entity\Event\MegamarketTokenEvent;
 use BaksDev\Megamarket\Entity\MegamarketToken;
 use BaksDev\Megamarket\Messenger\MegamarketTokenMessage;
-use DomainException;
 
 final class MegamarketTokenHandler extends AbstractHandler
 {
     /** @see Megamarket */
-    public function handle(
-        MegamarketTokenDTO $command
-    ): string|MegamarketToken {
+    public function handle(MegamarketTokenDTO $command): string|MegamarketToken
+    {
+        $this->setCommand($command);
 
-        /** Валидация DTO  */
-        $this->validatorCollection->add($command);
-
-        $this->main = new MegamarketToken($command->getProfile());
-        $this->event = new MegamarketTokenEvent();
-
-        try
-        {
-            $command->getEvent() ? $this->preUpdate($command, true) : $this->prePersist($command);
-        }
-        catch(DomainException $errorUniqid)
-        {
-            return $errorUniqid->getMessage();
-        }
+        $MegamarketToken = new MegamarketToken($command->getProfile());
+        $this->preEventPersistOrUpdate($MegamarketToken, MegamarketTokenEvent::class);
 
         /** Валидация всех объектов */
         if($this->validatorCollection->isInvalid())
@@ -69,5 +56,4 @@ final class MegamarketTokenHandler extends AbstractHandler
 
         return $this->main;
     }
-
 }

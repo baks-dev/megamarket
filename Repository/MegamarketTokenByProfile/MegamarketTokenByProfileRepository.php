@@ -77,6 +77,8 @@ final class MegamarketTokenByProfileRepository implements MegamarketTokenByProfi
         $qb->select('token.id AS profile');
         $qb->addSelect('event.token AS token');
         $qb->addSelect('event.company AS company');
+        $qb->addSelect('event.percent AS percent');
+        $qb->addSelect('event.rate AS rate');
 
         /* Кешируем результат ORM */
         return $qb

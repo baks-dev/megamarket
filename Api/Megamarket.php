@@ -26,14 +26,17 @@ declare(strict_types=1);
 namespace BaksDev\Megamarket\Api;
 
 use App\Kernel;
+use BaksDev\Core\Cache\AppCacheInterface;
 use BaksDev\Megamarket\Repository\MegamarketTokenByProfile\MegamarketTokenByProfileInterface;
 use BaksDev\Megamarket\Type\Authorization\MegamarketAuthorizationToken;
 use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 use DomainException;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpClient\RetryableHttpClient;
+use Symfony\Contracts\Cache\CacheInterface;
 
 abstract class Megamarket
 {
@@ -43,18 +46,16 @@ abstract class Megamarket
 
     private ?MegamarketAuthorizationToken $AuthorizationToken = null;
 
-    private MegamarketTokenByProfileInterface $TokenByProfile;
-
     private array $headers;
 
     public function __construct(
-        MegamarketTokenByProfileInterface $TokenByProfile,
+        #[Autowire(env: 'APP_ENV')] private readonly string $environment,
+        private readonly MegamarketTokenByProfileInterface $TokenByProfile,
+        private readonly AppCacheInterface $cache,
         LoggerInterface $WildberriesLogger,
     ) {
-        $this->TokenByProfile = $TokenByProfile;
         $this->logger = $WildberriesLogger;
     }
-
 
     public function profile(UserProfileUid|string $profile): self
     {
@@ -97,12 +98,10 @@ abstract class Megamarket
             }
         }
 
-        //$this->headers = ['Authorization' => 'Bearer '.$this->AuthorizationToken->getToken()];
-
         return new RetryableHttpClient(
             HttpClient::create(/*['headers' => $this->headers]*/)
                 ->withOptions([
-                    'base_uri' => Kernel::isTestEnvironment() ? 'https://api-test.megamarket.tech' : 'https://api.megamarket.tech',
+                    'base_uri' => 'https://api.megamarket.tech',
                     'verify_host' => false
                 ])
         );
@@ -116,11 +115,6 @@ abstract class Megamarket
         return $this->profile;
     }
 
-    //    protected function getBusiness(): int
-    //    {
-    //        return $this->AuthorizationToken->getBusiness();
-    //    }
-
     protected function getToken(): string
     {
         return $this->AuthorizationToken->getToken();
@@ -131,18 +125,29 @@ abstract class Megamarket
         return $this->AuthorizationToken->getCompany();
     }
 
-    protected function getCurlHeader(): string
+    protected function getPercent(): int
     {
-        $this->headers['accept'] = 'application/json';
-        $this->headers['Content-Type'] = 'application/json; charset=utf-8';
+        return $this->AuthorizationToken->getPercent();
+    }
 
-        return '-H "'.implode('" -H "', array_map(
-            function ($key, $value) {
-                return "$key: $value";
-            },
-            array_keys($this->headers),
-            $this->headers
-        )).'"';
+    protected function getRate(): int
+    {
+        return $this->AuthorizationToken->getRate();
+    }
+
+    /**
+     * Метод проверяет что окружение является PROD,
+     * тем самым позволяет выполнять операции запроса на сторонний сервис
+     * ТОЛЬКО в PROD окружении
+     */
+    protected function isExecuteEnvironment(): bool
+    {
+        return $this->environment === 'prod';
+    }
+
+    protected function getCacheInit(string $namespace): CacheInterface
+    {
+        return $this->cache->init($namespace);
     }
 
 }

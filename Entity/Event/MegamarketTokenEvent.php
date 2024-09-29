@@ -71,6 +71,22 @@ class MegamarketTokenEvent extends EntityEvent
     #[ORM\Column(type: Types::INTEGER, nullable: true)] // 85604808
     private int $company;
 
+    /**
+     * Торговая наценка
+     */
+    #[Assert\NotBlank]
+    #[Assert\Range(min: 0, max: 100)]
+    #[ORM\Column(type: Types::SMALLINT, nullable: true)]
+    private ?int $percent = 0;
+
+    /**
+     * Торговая надбавка на габариты товара
+     */
+    #[Assert\NotBlank]
+    #[Assert\Range(min: 0)]
+    #[ORM\Column(type: Types::SMALLINT, nullable: true)]
+    private ?int $rate = 0;
+
 
     /**
      * Статус true = активен / false = заблокирован
