@@ -55,13 +55,13 @@ class MegamarketCommands extends Command
         if(class_exists(MegamarketPostPriceCommand::class))
         {
             $questions[] = 'Обновить цены';
-            $name[] = 'baks:megamarket:price';
+            $name[] = 'baks:megamarket:post:price';
         }
 
         if(class_exists(MegamarketPostStocksCommand::class))
         {
             $questions[] = 'Обновить остатки';
-            $name[] = 'baks:megamarket:stocks';
+            $name[] = 'baks:megamarket:post:stocks';
         }
 
         $question = new ChoiceQuestion(
