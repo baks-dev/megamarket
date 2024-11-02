@@ -10,7 +10,7 @@
 # systemctl stop baks-megamarket@1.service
 
 [Unit]
-Description=Symfony messenger megamarket %i
+Description=megamarket
 StartLimitBurst=5
 StartLimitIntervalSec=0
 

@@ -10,7 +10,7 @@
 # systemctl stop <UUID>@1.service
 
 [Unit]
-Description=Symfony messenger profile %i
+Description=<UUID>
 StartLimitBurst=5
 StartLimitIntervalSec=0
 
