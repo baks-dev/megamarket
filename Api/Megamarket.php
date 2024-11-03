@@ -103,7 +103,8 @@ abstract class Megamarket
             HttpClient::create(/*['headers' => $this->headers]*/)
                 ->withOptions([
                     'base_uri' => 'https://api.megamarket.tech',
-                    'verify_host' => false
+                    'verify_host' => false,
+                    'max_duration' => 15,
                 ])
         );
     }
