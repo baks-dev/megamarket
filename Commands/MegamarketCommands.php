@@ -25,8 +25,8 @@ declare(strict_types=1);
 
 namespace BaksDev\Megamarket\Commands;
 
-use BaksDev\Megamarket\Products\Commands\MegamarketPostPriceCommand;
-use BaksDev\Megamarket\Products\Commands\MegamarketPostStocksCommand;
+use BaksDev\Megamarket\Products\Commands\UpdateMegamarketProductsPriceCommand;
+use BaksDev\Megamarket\Products\Commands\UpdateMegamarketProductsStocksCommand;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -52,13 +52,13 @@ class MegamarketCommands extends Command
 
         $helper = $this->getHelper('question');
 
-        if(class_exists(MegamarketPostPriceCommand::class))
+        if(class_exists(UpdateMegamarketProductsPriceCommand::class))
         {
             $questions[] = 'Обновить цены';
             $name[] = 'baks:megamarket-products:post:price';
         }
 
-        if(class_exists(MegamarketPostStocksCommand::class))
+        if(class_exists(UpdateMegamarketProductsStocksCommand::class))
         {
             $questions[] = 'Обновить остатки';
             $name[] = 'baks:megamarket-products:post:stocks';
