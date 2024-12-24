@@ -72,7 +72,7 @@ abstract class Megamarket
         return $this;
     }
 
-    public function TokenHttpClient(MegamarketAuthorizationToken $AuthorizationToken = null): RetryableHttpClient
+    public function TokenHttpClient(?MegamarketAuthorizationToken $AuthorizationToken = null): RetryableHttpClient
     {
         if($AuthorizationToken !== null)
         {
