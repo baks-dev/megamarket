@@ -49,13 +49,14 @@ final class IndexController extends AbstractController
 
         // Поиск
         $search = new SearchDTO();
-        $searchForm = $this->createForm(
-            SearchForm::class,
-            $search,
-            ['action' => $this->generateUrl('megamarket:admin.index')]
-        );
 
-        $searchForm->handleRequest($request);
+        $searchForm = $this
+            ->createForm(
+                type: SearchForm::class,
+                data: $search,
+                options: ['action' => $this->generateUrl('megamarket:admin.index')]
+            )
+            ->handleRequest($request);
 
         $this->isAdmin() ?: $paginator->profile($this->getProfileUid());
 
