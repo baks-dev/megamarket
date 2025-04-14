@@ -43,7 +43,7 @@ abstract class Megamarket
 {
     protected ?UserProfileUid $profile = null;
 
-    private ?MegamarketAuthorizationToken $AuthorizationToken = null;
+    private MegamarketAuthorizationToken|false $AuthorizationToken = false;
 
     private array $headers;
 
@@ -77,9 +77,9 @@ abstract class Megamarket
             $this->profile = $AuthorizationToken->getProfile();
         }
 
-        if($this->AuthorizationToken === null)
+        if(false === ($this->AuthorizationToken instanceof MegamarketAuthorizationToken))
         {
-            if(!$this->profile)
+            if(false === ($this->profile instanceof UserProfileUid))
             {
                 $this->logger->critical('Не указан идентификатор профиля пользователя через вызов метода profile', [self::class.':'.__LINE__]);
 
@@ -90,7 +90,7 @@ abstract class Megamarket
 
             $this->AuthorizationToken = $this->TokenByProfile->getToken($this->profile);
 
-            if(!$this->AuthorizationToken)
+            if(false === ($this->AuthorizationToken instanceof MegamarketAuthorizationToken))
             {
                 throw new DomainException(sprintf('Токен авторизации Megamarket не найден: %s', $this->profile));
             }
