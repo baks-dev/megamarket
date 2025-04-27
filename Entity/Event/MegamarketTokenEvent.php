@@ -97,7 +97,7 @@ class MegamarketTokenEvent extends EntityEvent
     /**
      * Модификатор
      */
-    #[ORM\OneToOne(targetEntity: MegamarketTokenModify::class, mappedBy: 'event', cascade: ['all'])]
+    #[ORM\OneToOne(targetEntity: MegamarketTokenModify::class, mappedBy: 'event', cascade: ['all'], fetch: 'EAGER')]
     private MegamarketTokenModify $modify;
 
 
