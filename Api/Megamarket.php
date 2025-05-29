@@ -41,7 +41,7 @@ use Symfony\Contracts\Cache\CacheInterface;
 
 abstract class Megamarket
 {
-    protected ?UserProfileUid $profile = null;
+    protected UserProfileUid|false $profile = false;
 
     private MegamarketAuthorizationToken|false $AuthorizationToken = false;
 
@@ -92,6 +92,8 @@ abstract class Megamarket
 
             if(false === ($this->AuthorizationToken instanceof MegamarketAuthorizationToken))
             {
+                $this->profile = false;
+
                 throw new DomainException(sprintf('Токен авторизации Megamarket не найден: %s', $this->profile));
             }
         }
@@ -109,8 +111,13 @@ abstract class Megamarket
     /**
      * Profile
      */
-    protected function getProfile(): ?UserProfileUid
+    protected function getProfile(): UserProfileUid|false
     {
+        if(false === ($this->AuthorizationToken instanceof MegamarketAuthorizationToken))
+        {
+            return false;
+        }
+
         return $this->profile;
     }
 
