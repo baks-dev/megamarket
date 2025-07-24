@@ -98,8 +98,12 @@ abstract class Megamarket
             }
         }
 
+        $this->headers['X-Merchant-Token'] = $this->AuthorizationToken->getToken();
+        //$this->headers['accept'] = 'application/json';
+        //$this->headers['Content-Type'] = 'application/json';
+
         return new RetryableHttpClient(
-            HttpClient::create(/*['headers' => $this->headers]*/)
+            HttpClient::create(['headers' => $this->headers])
                 ->withOptions([
                     'base_uri' => 'https://api.megamarket.tech',
                     'verify_host' => false,
