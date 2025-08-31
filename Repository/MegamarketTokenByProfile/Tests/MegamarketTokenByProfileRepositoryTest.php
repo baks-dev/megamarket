@@ -29,14 +29,12 @@ use BaksDev\Core\Doctrine\DBALQueryBuilder;
 use BaksDev\Megamarket\Repository\MegamarketTokenByProfile\MegamarketTokenByProfileInterface;
 use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 use Doctrine\ORM\EntityManagerInterface;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\Attribute\When;
 
-
-/**
- * @group megamarket
- */
 #[When(env: 'test')]
+#[Group('megamarket')]
 class MegamarketTokenByProfileRepositoryTest extends KernelTestCase
 {
     public function testUseCase(): void
