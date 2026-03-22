@@ -54,7 +54,7 @@ final class IndexController extends AbstractController
             ->createForm(
                 type: SearchForm::class,
                 data: $search,
-                options: ['action' => $this->generateUrl('megamarket:admin.index')]
+                options: ['action' => $this->generateUrl('megamarket:admin.index')],
             )
             ->handleRequest($request);
 
@@ -69,7 +69,7 @@ final class IndexController extends AbstractController
             [
                 'query' => $AllYaMarket,
                 'search' => $searchForm->createView(),
-            ]
+            ],
         );
     }
 }

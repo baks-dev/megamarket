@@ -67,7 +67,7 @@ final class MegamarketTokenForm extends AbstractType
                 'expanded' => false,
                 'multiple' => false,
                 'required' => false,
-                'attr' => ['data-select' => 'select2',]
+                'attr' => ['data-select' => 'select2',],
             ]);
         }
 
@@ -76,7 +76,7 @@ final class MegamarketTokenForm extends AbstractType
         $builder->add('company', NumberType::class); //153373
 
         $builder->add('percent', IntegerType::class, [
-            'attr' => ['max' => 100, 'min' => -100]
+            'attr' => ['max' => 100, 'min' => -100],
         ]);
 
         $builder->add('rate', IntegerType::class);
@@ -88,7 +88,7 @@ final class MegamarketTokenForm extends AbstractType
         $builder->add(
             'megamarket_token',
             SubmitType::class,
-            ['label' => 'Save', 'label_html' => true, 'attr' => ['class' => 'btn-primary']]
+            ['label' => 'Save', 'label_html' => true, 'attr' => ['class' => 'btn-primary']],
         );
     }
 

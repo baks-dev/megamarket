@@ -123,6 +123,11 @@ class MegamarketTokenEvent extends EntityEvent
         return $this;
     }
 
+    public function getId(): MegamarketTokenEventUid
+    {
+        return $this->id;
+    }
+
     public function getDto($dto): mixed
     {
         $dto = is_string($dto) && class_exists($dto) ? new $dto() : $dto;
@@ -143,11 +148,6 @@ class MegamarketTokenEvent extends EntityEvent
         }
 
         throw new InvalidArgumentException(sprintf('Class %s interface error', $dto::class));
-    }
-
-    public function getId(): MegamarketTokenEventUid
-    {
-        return $this->id;
     }
 
     public function getProfile(): UserProfileUid

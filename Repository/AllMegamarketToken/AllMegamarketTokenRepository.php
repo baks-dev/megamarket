@@ -95,7 +95,7 @@ final class AllMegamarketTokenRepository implements AllMegamarketTokenInterface
             'token',
             MegamarketTokenEvent::class,
             'event',
-            'event.id = token.event AND event.profile = token.id'
+            'event.id = token.event AND event.profile = token.id',
         );
 
 
@@ -109,7 +109,7 @@ final class AllMegamarketTokenRepository implements AllMegamarketTokenInterface
                 'token',
                 UserProfile::class,
                 'users_profile',
-                'users_profile.id = token.id'
+                'users_profile.id = token.id',
             );
 
 
@@ -120,7 +120,7 @@ final class AllMegamarketTokenRepository implements AllMegamarketTokenInterface
                 'token',
                 UserProfileInfo::class,
                 'users_profile_info',
-                'users_profile_info.profile = token.id'
+                'users_profile_info.profile = token.id',
             );
 
         // Event
@@ -128,7 +128,7 @@ final class AllMegamarketTokenRepository implements AllMegamarketTokenInterface
             'users_profile',
             UserProfileEvent::class,
             'users_profile_event',
-            'users_profile_event.id = users_profile.event'
+            'users_profile_event.id = users_profile.event',
         );
 
 
@@ -139,7 +139,7 @@ final class AllMegamarketTokenRepository implements AllMegamarketTokenInterface
             'users_profile_event',
             UserProfilePersonal::class,
             'users_profile_personal',
-            'users_profile_personal.event = users_profile_event.id'
+            'users_profile_personal.event = users_profile_event.id',
         );
 
         // Avatar
@@ -152,7 +152,7 @@ final class AllMegamarketTokenRepository implements AllMegamarketTokenInterface
             'users_profile_event',
             UserProfileAvatar::class,
             'users_profile_avatar',
-            'users_profile_avatar.event = users_profile_event.id'
+            'users_profile_avatar.event = users_profile_event.id',
         );
 
         /** ACCOUNT */
@@ -161,7 +161,7 @@ final class AllMegamarketTokenRepository implements AllMegamarketTokenInterface
             'users_profile_info',
             Account::class,
             'account',
-            'account.id = users_profile_info.usr'
+            'account.id = users_profile_info.usr',
         );
 
         $qb->addSelect('account_event.email AS account_email');
@@ -169,7 +169,7 @@ final class AllMegamarketTokenRepository implements AllMegamarketTokenInterface
             'account',
             AccountEvent::class,
             'account_event',
-            'account_event.id = account.event AND account_event.account = account.id'
+            'account_event.id = account.event AND account_event.account = account.id',
         );
 
         $qb->addSelect('account_status.status as account_status');
@@ -177,7 +177,7 @@ final class AllMegamarketTokenRepository implements AllMegamarketTokenInterface
             'account_event',
             AccountStatus::class,
             'account_status',
-            'account_status.event = account_event.id'
+            'account_status.event = account_event.id',
         );
 
         /* Поиск */

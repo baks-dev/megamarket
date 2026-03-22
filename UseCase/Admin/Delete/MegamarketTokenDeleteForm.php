@@ -38,7 +38,7 @@ final class MegamarketTokenDeleteForm extends AbstractType
         $builder->add(
             'megamarket_token_delete',
             SubmitType::class,
-            ['label' => 'Save', 'label_html' => true, 'attr' => ['class' => 'btn-danger']]
+            ['label' => 'Save', 'label_html' => true, 'attr' => ['class' => 'btn-danger']],
         );
     }
 

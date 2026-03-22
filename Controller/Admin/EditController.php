@@ -68,7 +68,7 @@ final class EditController extends AbstractController
         $form = $this->createForm(MegamarketTokenForm::class, $MegamarketTokenDTO, [
             'action' => $this->generateUrl(
                 'megamarket:admin.newedit.edit',
-                ['id' => $MegamarketTokenDTO->getEvent() ?: new MegamarketTokenEventUid()]
+                ['id' => $MegamarketTokenDTO->getEvent() ?: new MegamarketTokenEventUid()],
             ),
         ]);
 

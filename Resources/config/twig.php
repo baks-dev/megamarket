@@ -30,7 +30,7 @@ return static function(TwigConfig $twig) {
 
     $twig->path(
         BaksDevMegamarketBundle::PATH.implode(DIRECTORY_SEPARATOR, ['Resources', 'view', '']), // .'Resources/view',
-        'megamarket'
+        'megamarket',
     );
 
 };

@@ -68,7 +68,7 @@ final class NewController extends AbstractController
                 $this->addFlash(
                     'breadcrumb.new',
                     'success.new',
-                    'megamarket.admin'
+                    'megamarket.admin',
                 );
 
                 return $this->redirectToRoute('megamarket:admin.index');

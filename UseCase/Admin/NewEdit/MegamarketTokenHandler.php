@@ -51,7 +51,7 @@ final class MegamarketTokenHandler extends AbstractHandler
         /* Отправляем сообщение в шину */
         $this->messageDispatch->dispatch(
             message: new MegamarketTokenMessage($this->main->getId(), $this->main->getEvent(), $command->getEvent()),
-            transport: 'megamarket'
+            transport: 'megamarket',
         );
 
         return $this->main;

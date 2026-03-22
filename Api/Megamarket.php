@@ -69,6 +69,11 @@ abstract class Megamarket
         return $this;
     }
 
+    protected function getToken(): string
+    {
+        return $this->AuthorizationToken->getToken();
+    }
+
     public function TokenHttpClient(?MegamarketAuthorizationToken $AuthorizationToken = null): RetryableHttpClient
     {
         if($AuthorizationToken !== null)
@@ -84,7 +89,7 @@ abstract class Megamarket
                 $this->logger->critical('Не указан идентификатор профиля пользователя через вызов метода profile', [self::class.':'.__LINE__]);
 
                 throw new InvalidArgumentException(
-                    'Не указан идентификатор профиля пользователя через вызов метода profile: ->profile($UserProfileUid)'
+                    'Не указан идентификатор профиля пользователя через вызов метода profile: ->profile($UserProfileUid)',
                 );
             }
 
@@ -108,7 +113,7 @@ abstract class Megamarket
                     'base_uri' => 'https://api.megamarket.tech',
                     'verify_host' => false,
                     'max_duration' => 15,
-                ])
+                ]),
         );
     }
 
@@ -123,11 +128,6 @@ abstract class Megamarket
         }
 
         return $this->profile;
-    }
-
-    protected function getToken(): string
-    {
-        return $this->AuthorizationToken->getToken();
     }
 
     protected function getCompany(): int

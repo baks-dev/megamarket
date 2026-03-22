@@ -52,7 +52,7 @@ final class ProfileByCompanyRepository implements ProfileByCompanyInterface
             'event',
             MegamarketToken::class,
             'main',
-            'main.id = event.profile AND main.event = event.id'
+            'main.id = event.profile AND main.event = event.id',
         );
 
         $dbal->addSelect('main.id AS value');

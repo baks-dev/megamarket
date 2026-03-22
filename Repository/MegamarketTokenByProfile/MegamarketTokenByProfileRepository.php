@@ -65,7 +65,7 @@ final class MegamarketTokenByProfileRepository implements MegamarketTokenByProfi
             ->setParameter(
                 'status',
                 UserProfileStatusActive::class,
-                UserProfileStatus::TYPE
+                UserProfileStatus::TYPE,
             );
 
         $qb->select('token.id AS profile');

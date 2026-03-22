@@ -77,7 +77,7 @@ final class AllProfileMegamarketTokenRepository implements AllProfileMegamarketT
             ->setParameter(
                 'status',
                 UserProfileStatusActive::class,
-                UserProfileStatus::TYPE
+                UserProfileStatus::TYPE,
             );
 
         $dbal->join(
